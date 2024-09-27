@@ -1,0 +1,15 @@
+{
+  "south-tyrols-sustainability": "South Tyrol's sustainability",
+  "hide-details": "Hide details",
+  "show-details": "Show details",
+  "source": "Source",
+  "kilometres-travelled": "Kilometres travelled",
+  "co2-saved": "CO2 saved",
+  "participants": "Participants",
+  "money-saved": "Money saved",
+  "overall-ranking": "Overall ranking",
+  "sustainability-action-filter": {
+    "all": "All",
+    "label": "Sustainability Action"
+  }
+}
