@@ -1,0 +1,15 @@
+{
+  "south-tyrols-sustainability": "La sostenibilità dell'Alto Adige",
+  "hide-details": "Nasconda dettagli",
+  "show-details": "Mostra dettagli",
+  "source": "Fonte",
+  "kilometres-travelled": "Chilometri percorsi",
+  "co2-saved": "CO2 risparmiata",
+  "participants": "Partecipanti",
+  "money-saved": "Soldi risparmiati",
+  "overall-ranking": "Classifica generale",
+  "sustainability-action-filter": {
+    "all": "Tutti",
+    "label": "Sustainability Action"
+  }
+}
