@@ -31,11 +31,8 @@
   ],
   "dist": {
     "basePath": "dist",
-    "files": [
-      "sustainability-apps.umd.js"
-    ],
-    "scripts": [
-    ]
+    "files": ["sustainability-apps.umd.js"],
+    "scripts": []
   },
   "configuration": {
     "tagName": "sustainability-apps",
@@ -55,11 +52,7 @@
         "label": "Two letter key for the language to be used. Fallback is `en`",
         "required": true,
         "options": {
-          "values": [
-            "en",
-            "de",
-            "it"
-          ],
+          "values": ["en", "de", "it"],
           "default": "en"
         }
       },
@@ -69,10 +62,7 @@
         "label": "Show the sustainability action filter",
         "required": true,
         "options": {
-          "values": [
-            "true",
-            "false"
-          ],
+          "values": ["true", "false"],
           "default": "true"
         }
       },
@@ -80,7 +70,10 @@
         "key": "selectedOrganisation",
         "type": "text",
         "label": "Organisation for which the data is shown (e.g. Alpenverein Südtirol)",
-        "required": false
+        "required": false,
+        "options": {
+          "default": ""
+        }
       }
     ]
   }
