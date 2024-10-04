@@ -1,10 +1,10 @@
 {
-  "title": "Hello-world",
-  "shortName": "hello-world-2",
-  "description": "Hello world simple webcomp example",
-  "descriptionAbstract": "Hello world simple webcomp example",
+  "title": "Sustainability apps",
+  "shortName": "sustainability-apps",
+  "description": "A web component displaying statistics for various sustainability apps used in South Tyrol",
+  "descriptionAbstract": "A web component displaying statistics for various sustainability apps used in South Tyrol.",
   "license": "AGPL-3.0-or-later",
-  "repositoryUrl": "https://your-repository.git",
+  "repositoryUrl": "https://github.com/noi-techpark/webcomp-sustainability-apps.git",
   "copyrightHolders": [
     {
       "name": "NOI",
@@ -15,32 +15,64 @@
   ],
   "authors": [
     {
-      "name": "...",
-      "email": "...",
-      "organization": "...",
-      "organizationUrl": "..."
+      "name": "Peter Schweigkofler",
+      "email": "peter.schweigkofler@konverto.eu",
+      "organization": "KONVERTO AG",
+      "organizationUrl": "https://konverto.eu/"
     }
   ],
   "image": "wcs-logo.png",
-  "searchTags": [],
+  "searchTags": [
+    "sustainability apps",
+    "südtirol radelt",
+    "suedtirol radelt",
+    "ummadum",
+    "lock.all"
+  ],
   "dist": {
     "basePath": "dist",
-    "files": [
-      "webcomp-boilerplate.min.js"
-    ],
-    "scripts": [
-    ]
+    "files": ["sustainability-apps.umd.js"],
+    "scripts": []
   },
   "configuration": {
-    "tagName": "hello-world",
+    "tagName": "sustainability-apps",
     "options": [
       {
-        "key": "title",
+        "key": "fontColor",
         "type": "text",
-        "label": "title of the web-comp",
+        "label": "Enter the font color in hex format (e.g. #000000 for black)",
+        "required": true,
+        "options": {
+          "default": "#000000"
+        }
+      },
+      {
+        "key": "language",
+        "type": "select",
+        "label": "Two letter key for the language to be used. Fallback is `en`",
+        "required": true,
+        "options": {
+          "values": ["en", "de", "it"],
+          "default": "en"
+        }
+      },
+      {
+        "key": "showSustainabilityActionFilter",
+        "type": "select",
+        "label": "Show the sustainability action filter",
+        "required": true,
+        "options": {
+          "values": ["true", "false"],
+          "default": "true"
+        }
+      },
+      {
+        "key": "selectedOrganisation",
+        "type": "text",
+        "label": "Organisation for which the data is shown (e.g. Alpenverein Südtirol)",
         "required": false,
         "options": {
-          "default": "hello-world"
+          "default": ""
         }
       }
     ]
