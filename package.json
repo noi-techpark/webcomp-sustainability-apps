@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "build": "vue-cli-service build --target lib --inline-vue --name sustainability-app src/export.ts",
+    "build": "vue-cli-service build --target lib --inline-vue --name sustainability-apps src/export.ts",
     "start": "vue-cli-service serve",
     "lint": "vue-cli-service lint"
   },
