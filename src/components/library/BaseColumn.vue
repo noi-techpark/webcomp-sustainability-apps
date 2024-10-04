@@ -31,7 +31,7 @@ SPDX-License-Identifier: AGPL-3.0-or-later
       </h1>
     </button>
 
-    <div v-if="showContent" class="details-container">
+    <div v-if="showContent" class="details-container" @click="toggleShow">
       <div class="circle-details">
         <img
           src="../../assets/img/minus_sign.svg"
@@ -40,7 +40,7 @@ SPDX-License-Identifier: AGPL-3.0-or-later
       </div>
       <div class="details">{{ $t('hide-details') }}</div>
     </div>
-    <div v-else class="details-container">
+    <div v-else class="details-container" @click="toggleShow">
       <div class="circle-details">
         <img
           src="../../assets/img/plus_sign.svg"
