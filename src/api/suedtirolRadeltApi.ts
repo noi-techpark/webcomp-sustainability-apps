@@ -33,7 +33,7 @@ export const fetchCompanyGamificationActions = async (): Promise<
   SuedtirolRadeltItem[]
 > => {
   const response = await suedtirolRadeltApiClient.get<ApiResponse>(
-    '/flat,node/CompanyGamificationAction/*/latest?where=sactive.eq.true&limit=-1'
+    '/flat,node/CompanyGamificationAction/*/latest?origin=webcomp-sustainability-apps&where=sactive.eq.true&limit=-1'
   );
   return parseResponse(response.data.data);
 };
