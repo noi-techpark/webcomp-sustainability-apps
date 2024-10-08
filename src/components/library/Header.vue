@@ -58,10 +58,7 @@ SPDX-License-Identifier: AGPL-3.0-or-later
               ? store.selectedActionFilter
               : t('sustainability-action-filter.all')
           }}
-          <img
-            class="ms-4"
-            src="../../assets/img/dropdown_toggle.svg"
-            alt="arrow-left" />
+          <drop-down-toggle class="ms-4" alt="arrow-left" />
         </button>
         <ul v-show="isDropdownOpen" class="dropdown-menu">
           <li
@@ -87,6 +84,7 @@ SPDX-License-Identifier: AGPL-3.0-or-later
 import { ref } from 'vue';
 import { suedtirolRadeltStore } from '@/stores/suedtirolRadeltStore';
 import { useI18n } from 'vue-i18n';
+import DropDownToggle from '@/assets/img/dropdown_toggle.svg';
 
 interface Props {
   sources: string[];

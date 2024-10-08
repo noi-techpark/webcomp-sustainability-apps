@@ -8,19 +8,13 @@ SPDX-License-Identifier: AGPL-3.0-or-later
   <div class="col-12 col-sm-6 col-md-4">
     <div class="title-container" :style="{ color: props.fontColor }">
       <div v-if="slotsCount > 1" class="carousel-nav" @click="prevComponent">
-        <img
-          src="../../assets/img/arrow_left.svg"
-          class="carousel-icon"
-          alt="arrow-left" />
+        <arrow-left class="carousel-icon" alt="arrow-left" />
       </div>
       <div class="title">
         {{ props.title }}
       </div>
       <div v-if="slotsCount > 1" class="carousel-nav" @click="nextComponent">
-        <img
-          src="../../assets/img/arrow_right.svg"
-          class="carousel-icon"
-          alt="arrow-right" />
+        <arrow-right class="carousel-icon" alt="arrow-right" />
       </div>
     </div>
 
@@ -33,19 +27,13 @@ SPDX-License-Identifier: AGPL-3.0-or-later
 
     <div v-if="showContent" class="details-container" @click="toggleShow">
       <div class="circle-details">
-        <img
-          src="../../assets/img/minus_sign.svg"
-          class="minus-sign"
-          alt="minus-sign" />
+        <minus-sign alt="minus-sign" />
       </div>
       <div class="details">{{ $t('hide-details') }}</div>
     </div>
     <div v-else class="details-container" @click="toggleShow">
       <div class="circle-details">
-        <img
-          src="../../assets/img/plus_sign.svg"
-          class="plus-sign"
-          alt="plus-sign" />
+        <plus-sign alt="plus-sign" />
       </div>
       <div class="details">{{ $t('show-details') }}</div>
     </div>
@@ -68,6 +56,11 @@ SPDX-License-Identifier: AGPL-3.0-or-later
 
 <script setup lang="ts">
 import { ref, computed, watch } from 'vue';
+
+import ArrowLeft from '@/assets/img/arrow_left.svg';
+import ArrowRight from '@/assets/img/arrow_right.svg';
+import MinusSign from '@/assets/img/minus_sign.svg';
+import PlusSign from '@/assets/img/plus_sign.svg';
 
 interface Props {
   fontColor: string;
@@ -159,6 +152,7 @@ watch(index, (newIndex) => {
 }
 
 .circle-details {
+  display: flex;
   font-weight: bold;
   height: 28px;
   width: 28px;
@@ -177,11 +171,6 @@ watch(index, (newIndex) => {
   color: #adb5bd;
   font-size: 15px;
   font-style: italic;
-}
-
-.minus-sign,
-.plus-sign {
-  padding-bottom: 4px;
 }
 
 .content-container {

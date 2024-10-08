@@ -31,5 +31,6 @@
     "tests/**/*.ts",
     "tests/**/*.tsx"
   ],
+  "files": ["globals.d.ts"],
   "exclude": ["node_modules"]
 }
