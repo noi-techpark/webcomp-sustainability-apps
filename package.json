@@ -33,6 +33,7 @@
     "prettier": "^3.2.5",
     "sass": "^1.71.1",
     "sass-loader": "^10.5.2",
+    "svg-vue3-loader": "^1.0.2",
     "typescript": "^5.3.3"
   }
 }

@@ -17,10 +17,7 @@ SPDX-License-Identifier: AGPL-3.0-or-later
           class="search-input"
           v-model="searchQuery" />
         <div class="search-icon justify-self-end">
-          <img
-            src="../../assets/img/search-icon.svg"
-            style="padding-right: 2px"
-            alt="search-icon" />
+          <search-icon style="padding-right: 2px" alt="search-icon" />
         </div>
       </div>
 
@@ -75,6 +72,7 @@ SPDX-License-Identifier: AGPL-3.0-or-later
 
 <script setup lang="ts">
 import { computed, ref } from 'vue';
+import SearchIcon from '@/assets/img/search-icon.svg';
 
 interface Props {
   title: string;
