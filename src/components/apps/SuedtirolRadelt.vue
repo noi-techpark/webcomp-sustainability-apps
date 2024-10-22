@@ -49,25 +49,25 @@ SPDX-License-Identifier: AGPL-3.0-or-later
       <template #slide-0>
         <SearchContainer
           :title="t('overall-ranking')"
-          :selected-organisation="props.selectedOrganisation"
+          :selected-organisation="store.selectedOrganizationFilter"
           :sorted-organisations="sortedKmTotalOrganisations" />
       </template>
       <template #slide-1>
         <SearchContainer
           :title="t('overall-ranking')"
-          :selected-organisation="props.selectedOrganisation"
+          :selected-organisation="store.selectedOrganizationFilter"
           :sorted-organisations="sortedCo2Organisations" />
       </template>
       <template #slide-2>
         <SearchContainer
           :title="t('overall-ranking')"
-          :selected-organisation="props.selectedOrganisation"
+          :selected-organisation="store.selectedOrganizationFilter"
           :sorted-organisations="sortedNumberOfPeopleOrganisations" />
       </template>
       <template #slide-3>
         <SearchContainer
           :title="t('overall-ranking')"
-          :selected-organisation="props.selectedOrganisation"
+          :selected-organisation="store.selectedOrganizationFilter"
           :sorted-organisations="sortedMoneySavedOrganisations"
       /></template>
     </BaseColumn>
@@ -94,6 +94,7 @@ const { t } = useI18n();
 
 onMounted(() => {
   store.loadCompanyGamificationActions();
+  store.selectedOrganizationFilter = props.selectedOrganisation;
 });
 
 const formatValue = (value: number, minDigits: number, maxDigits: number) =>
@@ -107,8 +108,9 @@ const filterOrganisations = () =>
     Object.entries(store.organisations)
       .filter(
         ([, org]) =>
-          !props.selectedOrganisation ||
-          org.sname.toLowerCase() === props.selectedOrganisation.toLowerCase()
+          !store.selectedOrganizationFilter ||
+          org.sname.toLowerCase() ===
+            store.selectedOrganizationFilter.toLowerCase()
       )
       .filter(
         ([key]) =>

@@ -11,5 +11,9 @@
   "sustainability-action-filter": {
     "all": "Alle",
     "label": "Sustainability Action"
+  },
+  "organization-filter": {
+    "all": "Alle",
+    "label": "Organisation"
   }
 }

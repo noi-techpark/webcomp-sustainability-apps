@@ -10,6 +10,7 @@ SPDX-License-Identifier: AGPL-3.0-or-later
       :sources="sources"
       :active-sources="activeSources"
       :show-sustainability-action-filter="true"
+      :show-organization-filter="true"
       @update-active-sources="handleUpdateActiveSources" />
     <SuedtirolRadelt
       v-if="showSuedtirolRadelt()"

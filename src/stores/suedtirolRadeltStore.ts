@@ -17,7 +17,9 @@ interface AggregatedData {
 interface State {
   organisations: Record<string, AggregatedData>;
   actionFilters: Set<string>;
-  selectedActionFilter: string | null;
+  organizationFilters: Set<string>;
+  selectedActionFilter?: string;
+  selectedOrganizationFilter?: string;
   loading: boolean;
   error: string | null;
 }
@@ -26,13 +28,16 @@ export const suedtirolRadeltStore = defineStore('suedtirol-radelt-store', {
   state: (): State => ({
     organisations: {},
     actionFilters: new Set<string>(),
-    selectedActionFilter: null,
+    organizationFilters: new Set<string>(),
     loading: false,
     error: null,
   }),
   actions: {
-    setSelectedActionFilter(newFilter: string | null) {
+    setSelectedActionFilter(newFilter?: string) {
       this.selectedActionFilter = newFilter;
+    },
+    setSelectedOrganizationFilter(newFilter?: string) {
+      this.selectedOrganizationFilter = newFilter;
     },
     async loadCompanyGamificationActions() {
       this.loading = true;
@@ -89,6 +94,18 @@ export const suedtirolRadeltStore = defineStore('suedtirol-radelt-store', {
                 lastParts.push(lastPart);
               }
               return lastParts;
+            },
+            []
+          )
+        );
+        this.organizationFilters = new Set(
+          Object.keys(this.organisations).reduce(
+            (firstParts: string[], key: string) => {
+              const firstPart = key.split('-').slice(0, -1).join('-');
+              if (firstPart) {
+                firstParts.push(firstPart);
+              }
+              return firstParts;
             },
             []
           )
