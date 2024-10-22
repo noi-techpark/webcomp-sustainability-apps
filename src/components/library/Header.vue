@@ -66,7 +66,7 @@ SPDX-License-Identifier: AGPL-3.0-or-later
           <li
             v-for="(filter, index) in [
               t('organization-filter.all'),
-              ...store.organizationFilters,
+              ...sortedOrganizationFilters,
             ]"
             style="cursor: pointer"
             :key="index">
@@ -121,7 +121,7 @@ SPDX-License-Identifier: AGPL-3.0-or-later
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue';
+import { computed, ref } from 'vue';
 import { suedtirolRadeltStore } from '@/stores/suedtirolRadeltStore';
 import { useI18n } from 'vue-i18n';
 import DropDownToggle from '@/assets/img/dropdown_toggle.svg';
@@ -139,6 +139,10 @@ const { t } = useI18n();
 
 const isActionDropdownOpen = ref(false);
 const isOrganizationDropdownOpen = ref(false);
+
+const sortedOrganizationFilters = computed(() => {
+  return [...store.organizationFilters].sort();
+});
 
 const toggleActionDropdown = () => {
   isActionDropdownOpen.value = !isActionDropdownOpen.value;
