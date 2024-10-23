@@ -67,6 +67,16 @@
         }
       },
       {
+        "key": "showOrganizationFilter",
+        "type": "select",
+        "label": "Show the organization filter",
+        "required": true,
+        "options": {
+          "values": ["true", "false"],
+          "default": "true"
+        }
+      },
+      {
         "key": "selectedOrganisation",
         "type": "text",
         "label": "Organisation for which the data is shown (e.g. Alpenverein Südtirol)",

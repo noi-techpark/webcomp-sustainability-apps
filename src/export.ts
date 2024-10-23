@@ -19,6 +19,7 @@ class CustomElement extends HTMLElement {
       'fontColor',
       'language',
       'showSustainabilityActionFilter',
+      'showOrganizationFilter',
     ];
 
     const optionalPropsList: string[] = ['selectedOrganisation'];
