@@ -217,8 +217,9 @@ h4 {
 
 .list-item {
   display: flex;
+  flex-direction: column;
   padding: 12px 0;
-  align-items: center;
+  justify-content: start;
   border-bottom: 1px solid #ced4da;
 }
 
@@ -242,7 +243,7 @@ h4 {
 
 .amount {
   flex: 1;
-  text-align: right;
+  text-align: center;
 }
 
 .ellipsis {
