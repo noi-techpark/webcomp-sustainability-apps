@@ -76,6 +76,6 @@ const handleUpdateActiveSources = function (newActiveSources: string[]) {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
-  margin: 80px 8px 8px 8px;
+  margin: 12px 8px 8px 8px;
 }
 </style>

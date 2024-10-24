@@ -5,17 +5,9 @@ SPDX-License-Identifier: AGPL-3.0-or-later
 -->
 
 <template>
-  <div class="col-12 col-sm-6 col-md-4">
-    <div class="title-container" :style="{ color: props.fontColor }">
-      <div v-if="slotsCount > 1" class="carousel-nav" @click="prevComponent">
-        <arrow-left class="carousel-icon" alt="arrow-left" />
-      </div>
-      <div class="title">
-        {{ props.title }}
-      </div>
-      <div v-if="slotsCount > 1" class="carousel-nav" @click="nextComponent">
-        <arrow-right class="carousel-icon" alt="arrow-right" />
-      </div>
+  <div>
+    <div class="title mb-2">
+      {{ props.title }}
     </div>
 
     <button @click="toggleShow" class="ellipsis-container">
@@ -39,9 +31,28 @@ SPDX-License-Identifier: AGPL-3.0-or-later
     </div>
 
     <transition name="content">
-      <div v-if="showContent" class="content-container">
+      <div
+        v-if="showContent"
+        class="content-container d-flex flex-column flex-grow-1">
+        <div class="title-container" :style="{ color: props.fontColor }">
+          <div
+            v-if="slotTitles.length > 1"
+            class="carousel-nav"
+            @click="prevComponent">
+            <arrow-left class="carousel-icon" alt="arrow-left" />
+          </div>
+          <div class="title">
+            {{ props.slotTitles[index] }}
+          </div>
+          <div
+            v-if="slotTitles.length > 1"
+            class="carousel-nav"
+            @click="nextComponent">
+            <arrow-right class="carousel-icon" alt="arrow-right" />
+          </div>
+        </div>
         <transition :name="transitionName" mode="out-in">
-          <div :key="key">
+          <div :key="key" class="d-flex flex-column flex-grow-1">
             <slot :name="`slide-${index}`"></slot>
           </div>
         </transition>
@@ -68,7 +79,7 @@ interface Props {
   title: string;
   value: string;
   unit?: string;
-  slotsCount: number;
+  slotTitles: string[];
 }
 
 const props = defineProps<Props>();
@@ -87,12 +98,13 @@ const toggleShow = function () {
 // Carousel navigation logic
 const nextComponent = function () {
   transitionName.value = 'slide-right';
-  index.value = (index.value + 1) % props.slotsCount;
+  index.value = (index.value + 1) % props.slotTitles.length;
 };
 
 const prevComponent = function () {
   transitionName.value = 'slide-left';
-  index.value = index.value === 0 ? props.slotsCount - 1 : index.value - 1;
+  index.value =
+    index.value === 0 ? props.slotTitles.length - 1 : index.value - 1;
 };
 
 // Computed property to update key for transition
@@ -123,7 +135,6 @@ watch(index, (newIndex) => {
 }
 
 .title {
-  flex-grow: 1;
   text-align: center;
   font-size: 18px;
   font-weight: bold;
@@ -174,7 +185,6 @@ watch(index, (newIndex) => {
 }
 
 .content-container {
-  min-height: 356px;
   padding: 0 24px 14px 24px;
 }
 

@@ -104,11 +104,14 @@ const chartOptions = computed(() => ({
       },
       ticks: {
         color: '#ADB5BD',
-        callback: function (value: number) {
-          if (value >= 1000000) {
-            return value / 1000000 + 'Mil.';
+        callback: function (tickValue: string | number) {
+          if (typeof tickValue === 'number') {
+            if (tickValue >= 1000000) {
+              return tickValue / 1000000 + 'Mil.';
+            }
+            return tickValue / 1000 + 'k';
           }
-          return value / 1000 + 'k';
+          return tickValue;
         },
       },
     },

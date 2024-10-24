@@ -6,11 +6,7 @@ SPDX-License-Identifier: AGPL-3.0-or-later
 
 <template>
   <div>
-    <!--
-      <LineChart
-        :data="DATA"
-        :labels="LABELS" />
-        -->
+    <LineChart :data="data" :labels="labels" />
     <div v-for="(item, index) in props.rowData" :key="index" class="list-item">
       <h4 class="px-2 label">{{ item.label }}</h4>
       <div class="column value">
@@ -21,6 +17,8 @@ SPDX-License-Identifier: AGPL-3.0-or-later
 </template>
 
 <script setup lang="ts">
+import { computed } from 'vue';
+import LineChart from '../charts/LineChart.vue';
 interface Row {
   label: string;
   value: string;
@@ -32,6 +30,9 @@ interface Props {
 }
 
 const props = defineProps<Props>();
+
+const labels = computed(() => props.rowData.map((item) => item.label));
+const data = computed(() => props.rowData.map((item) => Number(item.value)));
 </script>
 
 <style scoped>

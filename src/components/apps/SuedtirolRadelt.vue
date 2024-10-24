@@ -6,81 +6,119 @@ SPDX-License-Identifier: AGPL-3.0-or-later
 
 <template>
   <div v-if="store.loading">Loading...</div>
-  <div v-else class="row">
-    <BaseColumn
-      :font-color="props.fontColor"
-      :title="t(columnsData[0].columnTitle)"
-      :value="columnsData[0].columnValue"
-      :unit="columnsData[0].columnUnit"
-      :sources="props.activeSources"
-      :slots-count="2"
-      @update:index="(index) => updateColumnsData(0, index)">
-      <template #slide-0>
-        <LineChartContainer :title="'Zeitraum'" :row-data="kmTotalRowData" />
-      </template>
-      <template #slide-1>
-        <LineChartContainer
-          :title="'Zeitraum'"
-          :row-data="numberOfPeopleRowData" />
-      </template>
-    </BaseColumn>
-    <BaseColumn
-      :font-color="props.fontColor"
-      :title="t(columnsData[1].columnTitle)"
-      :value="columnsData[1].columnValue"
-      :unit="columnsData[1].columnUnit"
-      :sources="props.activeSources"
-      :slots-count="2"
-      @update:index="(index) => updateColumnsData(1, index)">
-      <template #slide-0>
-        <LineChartContainer :title="'Zeitraum'" :row-data="co2RowData" />
-      </template>
-      <template #slide-1>
-        <LineChartContainer :title="'Zeitraum'" :row-data="moneySavedRowData" />
-      </template>
-    </BaseColumn>
-    <BaseColumn
-      :font-color="props.fontColor"
-      :title="t(columnsData[2].columnTitle)"
-      :value="columnsData[2].columnValue"
-      :sources="props.activeSources"
-      :slots-count="4"
-      @update:index="(index) => updateColumnsData(2, index)">
-      <template #slide-0>
-        <SearchContainer
-          :title="t('overall-ranking')"
-          :selected-organisation="store.selectedOrganizationFilter"
-          :sorted-organisations="sortedKmTotalOrganisations" />
-      </template>
-      <template #slide-1>
-        <SearchContainer
-          :title="t('overall-ranking')"
-          :selected-organisation="store.selectedOrganizationFilter"
-          :sorted-organisations="sortedCo2Organisations" />
-      </template>
-      <template #slide-2>
-        <SearchContainer
-          :title="t('overall-ranking')"
-          :selected-organisation="store.selectedOrganizationFilter"
-          :sorted-organisations="sortedNumberOfPeopleOrganisations" />
-      </template>
-      <template #slide-3>
-        <SearchContainer
-          :title="t('overall-ranking')"
-          :selected-organisation="store.selectedOrganizationFilter"
-          :sorted-organisations="sortedMoneySavedOrganisations"
-      /></template>
-    </BaseColumn>
+  <div v-else class="container">
+    <div class="row">
+      <div class="col-lg-4 col-md-12">
+        <GridElement
+          :font-color="props.fontColor"
+          :title="t(gridElementDefinitions[0].title)"
+          :value="gridElementDefinitions[0].value.value"
+          :unit="gridElementDefinitions[0].unit"
+          :sources="props.activeSources"
+          :slotTitles="['Zeitraum', 'Mobilitatsform']"
+          @update:index="(index) => updateColumnsData(0, index)">
+          <template #slide-0>
+            <LineChartContainer :row-data="kmTotalRowData" />
+          </template>
+          <template #slide-1>
+            <LineChartContainer
+              :title="'Mobilitatsform'"
+              :row-data="kmTotalRowData" />
+          </template>
+        </GridElement>
+        <GridElement
+          :font-color="props.fontColor"
+          :title="t(gridElementDefinitions[1].title)"
+          :value="gridElementDefinitions[1].value.value"
+          :unit="gridElementDefinitions[1].unit"
+          :sources="props.activeSources"
+          :slotTitles="['Zeitraum', 'Mobilitatsform']"
+          @update:index="(index) => updateColumnsData(1, index)">
+          <template #slide-0>
+            <LineChartContainer :title="'Zeitraum'" :row-data="co2RowData" />
+          </template>
+          <template #slide-1>
+            <LineChartContainer :row-data="moneySavedRowData" />
+          </template>
+        </GridElement>
+      </div>
+      <div class="col-lg-4 col-md-12">
+        <GridElement
+          :font-color="props.fontColor"
+          :title="t(gridElementDefinitions[2].title)"
+          :value="gridElementDefinitions[2].value.value"
+          :unit="gridElementDefinitions[2].unit"
+          :sources="props.activeSources"
+          :slotTitles="['Zeitraum', 'Mobilitatsform']"
+          @update:index="(index) => updateColumnsData(0, index)">
+          <template #slide-0>
+            <LineChartContainer :row-data="kmTotalRowData" />
+          </template>
+          <template #slide-1>
+            <LineChartContainer :row-data="numberOfPeopleRowData" />
+          </template>
+        </GridElement>
+        <GridElement
+          :font-color="props.fontColor"
+          :title="t(gridElementDefinitions[3].title)"
+          :value="gridElementDefinitions[3].value.value"
+          :unit="gridElementDefinitions[3].unit"
+          :sources="props.activeSources"
+          :slotTitles="['Zeitraum', 'Mobilitatsform']"
+          @update:index="(index) => updateColumnsData(1, index)">
+          <template #slide-0>
+            <LineChartContainer :title="'Zeitraum'" :row-data="co2RowData" />
+          </template>
+          <template #slide-1>
+            <LineChartContainer :row-data="moneySavedRowData" />
+          </template>
+        </GridElement>
+      </div>
+      <GridElement
+        class="col-lg-4 col-md-12 d-flex flex-column"
+        :font-color="props.fontColor"
+        :title="t('overall-ranking')"
+        :value="'Leader: ' + columnsData[2].columnValue"
+        :sources="props.activeSources"
+        :slotTitles="[
+          t('kilometres-travelled'),
+          t('co2-saved'),
+          t('participants'),
+          t('money-saved'),
+        ]"
+        @update:index="(index) => updateColumnsData(2, index)">
+        <template #slide-0>
+          <SearchContainer
+            :selected-organisation="store.selectedOrganizationFilter"
+            :sorted-organisations="sortedKmTotalOrganisations" />
+        </template>
+        <template #slide-1>
+          <SearchContainer
+            :selected-organisation="store.selectedOrganizationFilter"
+            :sorted-organisations="sortedCo2Organisations" />
+        </template>
+        <template #slide-2>
+          <SearchContainer
+            :selected-organisation="store.selectedOrganizationFilter"
+            :sorted-organisations="sortedNumberOfPeopleOrganisations" />
+        </template>
+        <template #slide-3>
+          <SearchContainer
+            :selected-organisation="store.selectedOrganizationFilter"
+            :sorted-organisations="sortedMoneySavedOrganisations"
+        /></template>
+      </GridElement>
+    </div>
   </div>
 </template>
 
 <script setup lang="ts">
 import { onMounted, computed, watch, reactive } from 'vue';
-import BaseColumn from '@/components/library/BaseColumn.vue';
 import LineChartContainer from '@/components/containers/LineChartContainer.vue';
 import SearchContainer from '@/components/containers/SearchContainer.vue';
 import { suedtirolRadeltStore } from '@/stores/suedtirolRadeltStore';
 import { useI18n } from 'vue-i18n';
+import GridElement from '../library/GridElement.vue';
 
 interface Props {
   activeSources: string[];
@@ -228,6 +266,29 @@ const sortedNumberOfPeopleOrganisations = computed(() =>
 const sortedMoneySavedOrganisations = computed(() =>
   sortOrganisations('money_saved')
 );
+
+const gridElementDefinitions = [
+  {
+    title: 'kilometres-travelled',
+    value: kmTotal,
+    unit: 'km',
+  },
+  {
+    title: 'participants',
+    value: numberOfPeople,
+    unit: '',
+  },
+  {
+    title: 'co2-saved',
+    value: co2,
+    unit: 'kg',
+  },
+  {
+    title: 'money-saved',
+    value: moneySaved,
+    unit: 'EUR',
+  },
+];
 
 const columnDefinitions = [
   {
