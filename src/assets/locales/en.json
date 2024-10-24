@@ -8,6 +8,10 @@
   "participants": "Participants",
   "money-saved": "Money saved",
   "overall-ranking": "Overall ranking",
+  "chart-type": {
+    "over-time": "Over time",
+    "by-category": "By category"
+  },
   "sustainability-action-filter": {
     "all": "All",
     "label": "Sustainability Action"

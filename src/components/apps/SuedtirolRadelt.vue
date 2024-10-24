@@ -15,15 +15,13 @@ SPDX-License-Identifier: AGPL-3.0-or-later
           :value="gridElementDefinitions[0].value.value"
           :unit="gridElementDefinitions[0].unit"
           :sources="props.activeSources"
-          :slotTitles="['Zeitraum', 'Mobilitatsform']"
+          :slotTitles="[t('chart-type.over-time'), t('chart-type.by-category')]"
           @update:index="(index) => updateColumnsData(0, index)">
           <template #slide-0>
             <LineChartContainer :row-data="kmTotalRowData" />
           </template>
           <template #slide-1>
-            <LineChartContainer
-              :title="'Mobilitatsform'"
-              :row-data="kmTotalRowData" />
+            <LineChartContainer :row-data="kmTotalRowData" />
           </template>
         </GridElement>
         <GridElement
@@ -32,10 +30,10 @@ SPDX-License-Identifier: AGPL-3.0-or-later
           :value="gridElementDefinitions[1].value.value"
           :unit="gridElementDefinitions[1].unit"
           :sources="props.activeSources"
-          :slotTitles="['Zeitraum', 'Mobilitatsform']"
+          :slotTitles="[t('chart-type.over-time'), t('chart-type.by-category')]"
           @update:index="(index) => updateColumnsData(1, index)">
           <template #slide-0>
-            <LineChartContainer :title="'Zeitraum'" :row-data="co2RowData" />
+            <LineChartContainer :row-data="co2RowData" />
           </template>
           <template #slide-1>
             <LineChartContainer :row-data="moneySavedRowData" />
@@ -49,7 +47,7 @@ SPDX-License-Identifier: AGPL-3.0-or-later
           :value="gridElementDefinitions[2].value.value"
           :unit="gridElementDefinitions[2].unit"
           :sources="props.activeSources"
-          :slotTitles="['Zeitraum', 'Mobilitatsform']"
+          :slotTitles="[t('chart-type.over-time'), t('chart-type.by-category')]"
           @update:index="(index) => updateColumnsData(0, index)">
           <template #slide-0>
             <LineChartContainer :row-data="kmTotalRowData" />
@@ -64,10 +62,10 @@ SPDX-License-Identifier: AGPL-3.0-or-later
           :value="gridElementDefinitions[3].value.value"
           :unit="gridElementDefinitions[3].unit"
           :sources="props.activeSources"
-          :slotTitles="['Zeitraum', 'Mobilitatsform']"
+          :slotTitles="[t('chart-type.over-time'), t('chart-type.by-category')]"
           @update:index="(index) => updateColumnsData(1, index)">
           <template #slide-0>
-            <LineChartContainer :title="'Zeitraum'" :row-data="co2RowData" />
+            <LineChartContainer :row-data="co2RowData" />
           </template>
           <template #slide-1>
             <LineChartContainer :row-data="moneySavedRowData" />

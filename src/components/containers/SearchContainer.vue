@@ -43,7 +43,7 @@ SPDX-License-Identifier: AGPL-3.0-or-later
             },
           ]">
           <div class="label-container">
-            <h4 class="label px-2">{{ item.sname }}</h4>
+            <h4 class="label px-2">{{ `${item.index}. ${item.sname}` }}</h4>
           </div>
           <div class="amount">
             <span
@@ -81,9 +81,11 @@ const searchQuery = ref('');
 
 const filteredData = computed(() => {
   // Filtered list based on search query
-  let filtered = props.sortedOrganisations.filter((item) =>
-    item.sname.toLowerCase().includes(searchQuery.value.toLowerCase())
-  );
+  let filtered = props.sortedOrganisations
+    .filter((item) =>
+      item.sname.toLowerCase().includes(searchQuery.value.toLowerCase())
+    )
+    .map((item, index) => ({ ...item, index: index + 1 }));
 
   const maxItems = 6;
 
