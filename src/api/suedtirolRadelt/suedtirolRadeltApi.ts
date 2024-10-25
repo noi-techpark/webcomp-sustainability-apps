@@ -65,7 +65,7 @@ export async function fetchHistoricDataAsync(
   const response = await openDataHubApiClient.get<
     OpenDataHubApiResponse<HistoricSuedtirolRadeltItem>
   >(
-    `/flat/${companyGamificationEndpoint}/${requestedDataTypes.join(',')}/${from.toISOString()}/${to.toISOString}/?origin=webcomp-sustainability-apps&where=sname.eq.${company}&limit=-1`
+    `/flat/${companyGamificationEndpoint}/${requestedDataTypes.join(',')}/${from.toISOString()}/${to.toISOString()}/?origin=webcomp-sustainability-apps&where=sname.eq.${company}&limit=-1`
   );
   return response.data.data.map((item: HistoricSuedtirolRadeltItem) => ({
     tname: item.tname,
