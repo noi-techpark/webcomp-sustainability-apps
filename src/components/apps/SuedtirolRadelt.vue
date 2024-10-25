@@ -218,9 +218,10 @@ const sortedMoneySavedOrganisations = computed(() =>
 
 const extractHistoricData = (metric: string): LineChartData => {
   const filteredMetric = Object.fromEntries(
-    Object.entries(store.historicData).filter(([, data]) =>
-      data.filter((d) => d.tname === metric)
-    )
+    Object.entries(store.historicData).map(([date, data]) => [
+      date,
+      data.filter((d) => d.tname == metric),
+    ])
   ) as Record<string, SuedtirolRadeltItem[]>;
 
   const unit = Object.values(filteredMetric)[0]?.[0]?.tunit ?? '';
@@ -230,7 +231,7 @@ const extractHistoricData = (metric: string): LineChartData => {
       label: key,
       value: data.reduce((sum, d) => sum + (d.mvalue ?? 0), 0).toFixed(2),
     })),
-    unit: unit,
+    unit: unit === 'count' ? '' : unit,
   };
 };
 
