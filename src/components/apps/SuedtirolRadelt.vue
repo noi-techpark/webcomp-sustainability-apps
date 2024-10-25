@@ -141,7 +141,7 @@ const formatValue = (value: number, minDigits: number, maxDigits: number) =>
 
 const filterOrganisations = () =>
   Object.fromEntries(
-    Object.entries(store.organisations)
+    Object.entries(store.latestData)
       .filter(
         ([, org]) =>
           !store.selectedOrganizationFilter ||
@@ -223,7 +223,7 @@ const numberOfPeopleRowData = computed(() =>
 const moneySavedRowData = computed(() => generateRowData('money_saved', 2, 2));
 
 const sortOrganisations = (metric: string) => {
-  const filteredOrganisations = Object.entries(store.organisations ?? {})
+  const filteredOrganisations = Object.entries(store.latestData ?? {})
     .filter(
       ([key]) =>
         !store.selectedActionFilter || key.includes(store.selectedActionFilter)
@@ -331,7 +331,7 @@ const updateColumnsData = (setIndex: number, itemIndex: number) => {
   columnsData[setIndex].columnUnit = units[itemIndex];
 };
 
-watch([() => store.organisations, () => store.selectedActionFilter], () => {
+watch([() => store.latestData, () => store.selectedActionFilter], () => {
   columnsData[0].columnValue = kmTotal.value;
   columnsData[1].columnValue = co2.value;
   columnsData[2].columnValue = sortedKmTotalOrganisations.value[0]?.sname ?? '';

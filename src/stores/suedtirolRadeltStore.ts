@@ -2,8 +2,11 @@
 //
 // SPDX-License-Identifier: AGPL-3.0-or-later
 
+import {
+  fetchCompaniesAsync,
+  fetchCompanyGamificationActionsAsync,
+} from '@/api/suedtirolRadelt/suedtirolRadeltApi';
 import { defineStore } from 'pinia';
-import { fetchCompanyGamificationActions } from '@/api/suedtirolRadeltApi';
 
 interface AggregatedData {
   sname: string;
@@ -15,7 +18,7 @@ interface AggregatedData {
 }
 
 interface State {
-  organisations: Record<string, AggregatedData>;
+  latestData: Record<string, AggregatedData>;
   actionFilters: Set<string>;
   organizationFilters: Set<string>;
   selectedActionFilter?: string;
@@ -26,7 +29,7 @@ interface State {
 
 export const suedtirolRadeltStore = defineStore('suedtirol-radelt-store', {
   state: (): State => ({
-    organisations: {},
+    latestData: {},
     actionFilters: new Set<string>(),
     organizationFilters: new Set<string>(),
     loading: false,
@@ -43,9 +46,10 @@ export const suedtirolRadeltStore = defineStore('suedtirol-radelt-store', {
       this.loading = true;
       this.error = null;
       try {
-        const response = await fetchCompanyGamificationActions();
+        this.organizationFilters = await fetchCompaniesAsync();
+        const response = await fetchCompanyGamificationActionsAsync();
 
-        this.organisations = response.reduce(
+        this.latestData = response.reduce(
           (organisations, item) => {
             // Only these data fields are relevant
             if (
@@ -87,25 +91,13 @@ export const suedtirolRadeltStore = defineStore('suedtirol-radelt-store', {
         );
 
         this.actionFilters = new Set(
-          Object.keys(this.organisations).reduce(
+          Object.keys(this.latestData).reduce(
             (lastParts: string[], key: string) => {
               const lastPart = key.split('-').pop();
               if (lastPart) {
                 lastParts.push(lastPart);
               }
               return lastParts;
-            },
-            []
-          )
-        );
-        this.organizationFilters = new Set(
-          Object.keys(this.organisations).reduce(
-            (firstParts: string[], key: string) => {
-              const firstPart = key.split('-').slice(0, -1).join('-');
-              if (firstPart) {
-                firstParts.push(firstPart);
-              }
-              return firstParts;
             },
             []
           )
