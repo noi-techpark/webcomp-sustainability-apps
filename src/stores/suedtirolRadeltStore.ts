@@ -5,7 +5,9 @@
 import {
   fetchCompaniesAsync,
   fetchCompanyGamificationActionsAsync,
+  fetchHistoricDataAsync,
 } from '@/api/suedtirolRadelt/suedtirolRadeltApi';
+import { SuedtirolRadeltItem } from '@/models/suedtirolRadeltItem.model';
 import { defineStore } from 'pinia';
 
 interface AggregatedData {
@@ -19,6 +21,7 @@ interface AggregatedData {
 
 interface State {
   latestData: Record<string, AggregatedData>;
+  historicData: Record<string, SuedtirolRadeltItem[]>;
   actionFilters: Set<string>;
   organizationFilters: Set<string>;
   selectedActionFilter?: string;
@@ -30,6 +33,7 @@ interface State {
 export const suedtirolRadeltStore = defineStore('suedtirol-radelt-store', {
   state: (): State => ({
     latestData: {},
+    historicData: {},
     actionFilters: new Set<string>(),
     organizationFilters: new Set<string>(),
     loading: false,
@@ -47,9 +51,8 @@ export const suedtirolRadeltStore = defineStore('suedtirol-radelt-store', {
       this.error = null;
       try {
         this.organizationFilters = await fetchCompaniesAsync();
-        const response = await fetchCompanyGamificationActionsAsync();
-
-        this.latestData = response.reduce(
+        const latestDataResponse = await fetchCompanyGamificationActionsAsync();
+        this.latestData = latestDataResponse.reduce(
           (organisations, item) => {
             // Only these data fields are relevant
             if (
@@ -101,6 +104,25 @@ export const suedtirolRadeltStore = defineStore('suedtirol-radelt-store', {
             },
             []
           )
+        );
+
+        const to = new Date();
+        const from = new Date(to);
+        from.setDate(to.getDate() - 5);
+
+        const historicDataRequest = await fetchHistoricDataAsync(from, to);
+
+        this.historicData = historicDataRequest.reduce(
+          (historicData, item) => {
+            const date = new Date(item._timestamp);
+            const key = date.toLocaleDateString();
+            if (!historicData[key]) {
+              historicData[key] = [];
+            }
+            historicData[key].push(item);
+            return historicData;
+          },
+          {} as Record<string, SuedtirolRadeltItem[]>
         );
       } catch (error) {
         this.error = 'Failed to fetch data';

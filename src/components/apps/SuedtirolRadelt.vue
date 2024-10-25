@@ -15,13 +15,11 @@ SPDX-License-Identifier: AGPL-3.0-or-later
           :value="gridElementDefinitions[0].value.value"
           :unit="gridElementDefinitions[0].unit"
           :sources="props.activeSources"
-          :slotTitles="[t('chart-type.over-time'), t('chart-type.by-category')]"
+          :slotTitles="[t('chart-type.over-time')]"
           @update:index="(index) => updateColumnsData(0, index)">
           <template #slide-0>
-            <LineChartContainer :row-data="kmTotalRowData" />
-          </template>
-          <template #slide-1>
-            <LineChartContainer :row-data="kmTotalRowData" />
+            <LineChartContainer
+              :data="gridElementDefinitions[0].historicData.value" />
           </template>
         </GridElement>
         <GridElement
@@ -30,13 +28,11 @@ SPDX-License-Identifier: AGPL-3.0-or-later
           :value="gridElementDefinitions[1].value.value"
           :unit="gridElementDefinitions[1].unit"
           :sources="props.activeSources"
-          :slotTitles="[t('chart-type.over-time'), t('chart-type.by-category')]"
+          :slotTitles="[t('chart-type.over-time')]"
           @update:index="(index) => updateColumnsData(1, index)">
           <template #slide-0>
-            <LineChartContainer :row-data="co2RowData" />
-          </template>
-          <template #slide-1>
-            <LineChartContainer :row-data="moneySavedRowData" />
+            <LineChartContainer
+              :data="gridElementDefinitions[1].historicData.value" />
           </template>
         </GridElement>
       </div>
@@ -47,13 +43,11 @@ SPDX-License-Identifier: AGPL-3.0-or-later
           :value="gridElementDefinitions[2].value.value"
           :unit="gridElementDefinitions[2].unit"
           :sources="props.activeSources"
-          :slotTitles="[t('chart-type.over-time'), t('chart-type.by-category')]"
+          :slotTitles="[t('chart-type.over-time')]"
           @update:index="(index) => updateColumnsData(0, index)">
           <template #slide-0>
-            <LineChartContainer :row-data="kmTotalRowData" />
-          </template>
-          <template #slide-1>
-            <LineChartContainer :row-data="numberOfPeopleRowData" />
+            <LineChartContainer
+              :data="gridElementDefinitions[2].historicData.value" />
           </template>
         </GridElement>
         <GridElement
@@ -62,13 +56,11 @@ SPDX-License-Identifier: AGPL-3.0-or-later
           :value="gridElementDefinitions[3].value.value"
           :unit="gridElementDefinitions[3].unit"
           :sources="props.activeSources"
-          :slotTitles="[t('chart-type.over-time'), t('chart-type.by-category')]"
+          :slotTitles="[t('chart-type.over-time')]"
           @update:index="(index) => updateColumnsData(1, index)">
           <template #slide-0>
-            <LineChartContainer :row-data="co2RowData" />
-          </template>
-          <template #slide-1>
-            <LineChartContainer :row-data="moneySavedRowData" />
+            <LineChartContainer
+              :data="gridElementDefinitions[3].historicData.value" />
           </template>
         </GridElement>
       </div>
@@ -117,6 +109,8 @@ import SearchContainer from '@/components/containers/SearchContainer.vue';
 import { suedtirolRadeltStore } from '@/stores/suedtirolRadeltStore';
 import { useI18n } from 'vue-i18n';
 import GridElement from '../library/GridElement.vue';
+import { LineChartData } from '@/models/lineChartData.model';
+import { SuedtirolRadeltItem } from '@/models/suedtirolRadeltItem.model';
 
 interface Props {
   activeSources: string[];
@@ -179,49 +173,6 @@ const numberOfPeople = computed(() =>
 );
 const moneySaved = computed(() => calculateTotalValue('money_saved', 2, 2));
 
-const generateRowData = (
-  metric: string,
-  minDigits: number,
-  maxDigits: number
-) => {
-  const filters = store.selectedActionFilter
-    ? [store.selectedActionFilter]
-    : Array.from(store.actionFilters);
-
-  return filters.map((actionFilter) => {
-    const filteredData = Object.entries(filterOrganisations())
-      .filter(([key]) => key.includes(actionFilter))
-      .reduce(
-        (acc, [, organisation]) => {
-          const valueEntry = organisation.values.find(
-            (v) => v.tname === metric
-          );
-
-          if (valueEntry) {
-            acc.value += valueEntry.totalMValue || 0;
-            acc.unit = valueEntry.tunit || acc.unit;
-          }
-
-          return acc;
-        },
-        { value: 0, unit: '' }
-      );
-
-    return {
-      label: actionFilter,
-      value: formatValue(filteredData.value, minDigits, maxDigits),
-      unit: metric !== 'number_of_people' ? filteredData.unit : '',
-    };
-  });
-};
-
-const kmTotalRowData = computed(() => generateRowData('km_total', 0, 2));
-const co2RowData = computed(() => generateRowData('co2', 0, 2));
-const numberOfPeopleRowData = computed(() =>
-  generateRowData('number_of_people', 0, 0)
-);
-const moneySavedRowData = computed(() => generateRowData('money_saved', 2, 2));
-
 const sortOrganisations = (metric: string) => {
   const filteredOrganisations = Object.entries(store.latestData ?? {})
     .filter(
@@ -265,26 +216,48 @@ const sortedMoneySavedOrganisations = computed(() =>
   sortOrganisations('money_saved')
 );
 
+const extractHistoricData = (metric: string): LineChartData => {
+  const filteredMetric = Object.fromEntries(
+    Object.entries(store.historicData).filter(([, data]) =>
+      data.filter((d) => d.tname === metric)
+    )
+  ) as Record<string, SuedtirolRadeltItem[]>;
+
+  const unit = Object.values(filteredMetric)[0]?.[0]?.tunit ?? '';
+
+  return {
+    data: Object.entries(filteredMetric).map(([key, data]) => ({
+      label: key,
+      value: data.reduce((sum, d) => sum + (d.mvalue ?? 0), 0).toFixed(2),
+    })),
+    unit: unit,
+  };
+};
+
 const gridElementDefinitions = [
   {
     title: 'kilometres-travelled',
     value: kmTotal,
     unit: 'km',
+    historicData: computed(() => extractHistoricData('km_total')),
   },
   {
     title: 'participants',
     value: numberOfPeople,
     unit: '',
+    historicData: computed(() => extractHistoricData('number_of_people')),
   },
   {
     title: 'co2-saved',
     value: co2,
     unit: 'kg',
+    historicData: computed(() => extractHistoricData('co2')),
   },
   {
     title: 'money-saved',
     value: moneySaved,
     unit: 'EUR',
+    historicData: computed(() => extractHistoricData('money_saved')),
   },
 ];
 

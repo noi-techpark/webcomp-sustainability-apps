@@ -3,10 +3,9 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
 
 import { openDataHubApiClient } from '@/api/openDataHubApiClient';
-import { SuedtirolRadeltItem } from '@/api/suedtirolRadelt/suedtirolRadeltItem.model';
-import { OpenDataHubApiResponse } from '@/api/openDataHubApiResponse.model';
-import { Company } from '@/api/suedtirolRadelt/company.model';
-import { HistoricSuedtirolRadeltItem } from './historicSuedtirolRadeltItem.model';
+import { SuedtirolRadeltItem } from '@/models/suedtirolRadeltItem.model';
+import { OpenDataHubApiResponse } from '@/models/openDataHubApiResponse.model';
+import { Company } from '@/models/company.model';
 
 const requestedDataTypes = [
   'km_total',
@@ -41,14 +40,7 @@ export async function fetchCompanyGamificationActionsAsync(): Promise<
   >(
     `/flat/${companyGamificationEndpoint}/${requestedDataTypes.join(',')}/latest?origin=${origin}&where=${where}&limit=-1&select=${select.join(',')}`
   );
-  return response.data.data.map((item: SuedtirolRadeltItem) => ({
-    tname: item.tname,
-    ttype: item.ttype,
-    tunit: item.tunit,
-    mvalue: item.mvalue,
-    sname: item.sname,
-    stype: item.stype,
-  }));
+  return response.data.data;
 }
 
 export async function fetchHistoricDataAsync(
@@ -71,16 +63,9 @@ export async function fetchHistoricDataAsync(
     : 'sactive.eq.true';
 
   const response = await openDataHubApiClient.get<
-    OpenDataHubApiResponse<HistoricSuedtirolRadeltItem>
+    OpenDataHubApiResponse<SuedtirolRadeltItem>
   >(
     `/flat/${companyGamificationEndpoint}/${requestedDataTypes.join(',')}/${from.toISOString()}/${to.toISOString()}/?origin=${origin}&where=${where}&select=${select}&limit=-1`
   );
-  return response.data.data.map((item: HistoricSuedtirolRadeltItem) => ({
-    tname: item.tname,
-    ttype: item.ttype,
-    tunit: item.tunit,
-    mvalue: item.mvalue,
-    sname: item.sname,
-    stype: item.stype,
-  }));
+  return response.data.data;
 }

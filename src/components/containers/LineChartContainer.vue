@@ -7,10 +7,13 @@ SPDX-License-Identifier: AGPL-3.0-or-later
 <template>
   <div>
     <LineChart :data="data" :labels="labels" />
-    <div v-for="(item, index) in props.rowData" :key="index" class="list-item">
+    <div
+      v-for="(item, index) in props.data.data"
+      :key="index"
+      class="list-item">
       <h4 class="px-2 label">{{ item.label }}</h4>
       <div class="column value">
-        <span>{{ item.value }} {{ item.unit }}</span>
+        <span>{{ item.value }} {{ props.data.unit }}</span>
       </div>
     </div>
   </div>
@@ -19,20 +22,15 @@ SPDX-License-Identifier: AGPL-3.0-or-later
 <script setup lang="ts">
 import { computed } from 'vue';
 import LineChart from '../charts/LineChart.vue';
-interface Row {
-  label: string;
-  value: string;
-  unit: string;
-}
-
+import { LineChartData } from '@/models/lineChartData.model';
 interface Props {
-  rowData: Row[];
+  data: LineChartData;
 }
 
 const props = defineProps<Props>();
 
-const labels = computed(() => props.rowData.map((item) => item.label));
-const data = computed(() => props.rowData.map((item) => Number(item.value)));
+const labels = computed(() => props.data.data?.map((item) => item.label));
+const data = computed(() => props.data.data?.map((item) => Number(item.value)));
 </script>
 
 <style scoped>
