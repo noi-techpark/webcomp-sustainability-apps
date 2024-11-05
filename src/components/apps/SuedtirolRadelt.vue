@@ -220,7 +220,13 @@ const extractHistoricData = (metric: string): LineChartData => {
   const filteredMetric = Object.fromEntries(
     Object.entries(store.historicData).map(([date, data]) => [
       date,
-      data.filter((d) => d.tname == metric),
+      data
+        .filter((d) => d.tname == metric)
+        .filter((d) =>
+          store.selectedOrganizationFilter
+            ? d.sname.includes(store.selectedOrganizationFilter)
+            : true
+        ),
     ])
   ) as Record<string, SuedtirolRadeltItem[]>;
 
