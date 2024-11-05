@@ -129,7 +129,6 @@ const chartOptions = computed(() => ({
 </script>
 <style scoped>
 canvas {
-  width: auto !important;
   height: 130px !important;
 }
 </style>
