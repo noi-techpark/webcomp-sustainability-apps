@@ -5,7 +5,7 @@ SPDX-License-Identifier: AGPL-3.0-or-later
 -->
 
 <template>
-  <div class="d-flex flex-column flex-grow-1">
+  <div class="d-flex flex-column flex-grow-1" style="height: 10px">
     <div class="search-row space-between">
       <input
         type="text"
@@ -18,7 +18,7 @@ SPDX-License-Identifier: AGPL-3.0-or-later
     </div>
 
     <div
-      class="d-flex flex-column flex-grow-1"
+      class="d-flex flex-column flex-grow-1 h-100"
       :class="{
         'scroll-enabled':
           !props.selectedOrganisation ||
@@ -165,7 +165,7 @@ const filteredData = computed(() => {
 
 <style scoped>
 .scroll-enabled {
-  max-height: 550px;
+  max-height: 100%;
   overflow-y: auto;
 }
 
