@@ -108,8 +108,11 @@ const chartOptions = computed(() => ({
           if (typeof tickValue === 'number') {
             if (tickValue >= 1000000) {
               return tickValue / 1000000 + 'Mil.';
+            } else if (tickValue >= 1000) {
+              return tickValue / 1000 + 'k';
+            } else {
+              return tickValue.toPrecision(3);
             }
-            return tickValue / 1000 + 'k';
           }
           return tickValue;
         },
