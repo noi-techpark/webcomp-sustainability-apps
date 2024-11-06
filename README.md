@@ -12,6 +12,7 @@ SPDX-License-Identifier: CC0-1.0
 
 A web component displaying statistics for various sustainability apps used in South Tyrol.
 Currently, the web component only supports Suedtirol Radelt but Lock.All and Ummadum will be included soon.
+
 - [webcomp-sustainability-apps](#sustainability-apps)
   - [Usage](#usage)
     - [Attributes](#attributes)
@@ -44,7 +45,11 @@ Currently, the web component only supports Suedtirol Radelt but Lock.All and Umm
 Include the webcompscript file `dist/sustainability-apps.umd.js` in your HTML and define the web component like this:
 
 ```html
-<sustainability-apps fontColor="#000" language="en" showSustainabilityActionFilter="true"/>
+<sustainability-apps
+  fontColor="#000"
+  language="en"
+  showSustainabilityActionFilter="true"
+  showOrganizationFilter="true" />
 ```
 
 ### Attributes
@@ -70,9 +75,16 @@ Option whether the sustainability action filter is showing or not.
 Type: boolean
 Default: true
 
+#### Showing the organization filter
+
+Option whether the organization-filter is showing or not.
+
+Type: boolean
+Default: true
+
 #### Selected organisation
 
-Organisation for which the data is shown.
+Presets the organization-filter with this value.
 
 Type: string
 Required: false
@@ -176,11 +188,13 @@ This project is [REUSE](https://reuse.software) compliant, more information abou
 Since the CI for this project checks for REUSE compliance you might find it useful to use a pre-commit hook checking for REUSE compliance locally. The [pre-commit-config](.pre-commit-config.yaml) file in the repository root is already configured to check for REUSE compliance with help of the [pre-commit](https://pre-commit.com) tool.
 
 Install the tool by running:
+
 ```bash
 pip install pre-commit
 ```
+
 Then install the pre-commit hook via the config file by running:
+
 ```bash
 pre-commit install
 ```
-

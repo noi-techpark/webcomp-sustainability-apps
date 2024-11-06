@@ -6,81 +6,111 @@ SPDX-License-Identifier: AGPL-3.0-or-later
 
 <template>
   <div v-if="store.loading">Loading...</div>
-  <div v-else class="row">
-    <BaseColumn
-      :font-color="props.fontColor"
-      :title="t(columnsData[0].columnTitle)"
-      :value="columnsData[0].columnValue"
-      :unit="columnsData[0].columnUnit"
-      :sources="props.activeSources"
-      :slots-count="2"
-      @update:index="(index) => updateColumnsData(0, index)">
-      <template #slide-0>
-        <LineChartContainer :title="'Zeitraum'" :row-data="kmTotalRowData" />
-      </template>
-      <template #slide-1>
-        <LineChartContainer
-          :title="'Zeitraum'"
-          :row-data="numberOfPeopleRowData" />
-      </template>
-    </BaseColumn>
-    <BaseColumn
-      :font-color="props.fontColor"
-      :title="t(columnsData[1].columnTitle)"
-      :value="columnsData[1].columnValue"
-      :unit="columnsData[1].columnUnit"
-      :sources="props.activeSources"
-      :slots-count="2"
-      @update:index="(index) => updateColumnsData(1, index)">
-      <template #slide-0>
-        <LineChartContainer :title="'Zeitraum'" :row-data="co2RowData" />
-      </template>
-      <template #slide-1>
-        <LineChartContainer :title="'Zeitraum'" :row-data="moneySavedRowData" />
-      </template>
-    </BaseColumn>
-    <BaseColumn
-      :font-color="props.fontColor"
-      :title="t(columnsData[2].columnTitle)"
-      :value="columnsData[2].columnValue"
-      :sources="props.activeSources"
-      :slots-count="4"
-      @update:index="(index) => updateColumnsData(2, index)">
-      <template #slide-0>
-        <SearchContainer
-          :title="t('overall-ranking')"
-          :selected-organisation="props.selectedOrganisation"
-          :sorted-organisations="sortedKmTotalOrganisations" />
-      </template>
-      <template #slide-1>
-        <SearchContainer
-          :title="t('overall-ranking')"
-          :selected-organisation="props.selectedOrganisation"
-          :sorted-organisations="sortedCo2Organisations" />
-      </template>
-      <template #slide-2>
-        <SearchContainer
-          :title="t('overall-ranking')"
-          :selected-organisation="props.selectedOrganisation"
-          :sorted-organisations="sortedNumberOfPeopleOrganisations" />
-      </template>
-      <template #slide-3>
-        <SearchContainer
-          :title="t('overall-ranking')"
-          :selected-organisation="props.selectedOrganisation"
-          :sorted-organisations="sortedMoneySavedOrganisations"
-      /></template>
-    </BaseColumn>
+  <div v-else class="container">
+    <div class="row">
+      <div class="col-lg-4 col-md-12">
+        <GridElement
+          :font-color="props.fontColor"
+          :title="t(gridElementDefinitions[0].title)"
+          :value="gridElementDefinitions[0].value.value"
+          :unit="gridElementDefinitions[0].unit"
+          :sources="props.activeSources"
+          :slotTitles="[t('chart-type.over-time')]"
+          @update:index="(index) => updateColumnsData(0, index)">
+          <template #slide-0>
+            <LineChartContainer
+              :data="gridElementDefinitions[0].historicData.value" />
+          </template>
+        </GridElement>
+        <GridElement
+          :font-color="props.fontColor"
+          :title="t(gridElementDefinitions[1].title)"
+          :value="gridElementDefinitions[1].value.value"
+          :unit="gridElementDefinitions[1].unit"
+          :sources="props.activeSources"
+          :slotTitles="[t('chart-type.over-time')]"
+          @update:index="(index) => updateColumnsData(1, index)">
+          <template #slide-0>
+            <LineChartContainer
+              :data="gridElementDefinitions[1].historicData.value" />
+          </template>
+        </GridElement>
+      </div>
+      <div class="col-lg-4 col-md-12">
+        <GridElement
+          :font-color="props.fontColor"
+          :title="t(gridElementDefinitions[2].title)"
+          :value="gridElementDefinitions[2].value.value"
+          :unit="gridElementDefinitions[2].unit"
+          :sources="props.activeSources"
+          :slotTitles="[t('chart-type.over-time')]"
+          @update:index="(index) => updateColumnsData(0, index)">
+          <template #slide-0>
+            <LineChartContainer
+              :data="gridElementDefinitions[2].historicData.value" />
+          </template>
+        </GridElement>
+        <GridElement
+          :font-color="props.fontColor"
+          :title="t(gridElementDefinitions[3].title)"
+          :value="gridElementDefinitions[3].value.value"
+          :unit="gridElementDefinitions[3].unit"
+          :sources="props.activeSources"
+          :slotTitles="[t('chart-type.over-time')]"
+          @update:index="(index) => updateColumnsData(1, index)">
+          <template #slide-0>
+            <LineChartContainer
+              :data="gridElementDefinitions[3].historicData.value" />
+          </template>
+        </GridElement>
+      </div>
+      <GridElement
+        class="col-lg-4 col-md-12 d-flex flex-column"
+        :font-color="props.fontColor"
+        :title="t('overall-ranking')"
+        :value="'Leader: ' + columnsData[2].columnValue"
+        :sources="props.activeSources"
+        :slotTitles="[
+          t('kilometres-travelled'),
+          t('co2-saved'),
+          t('participants'),
+          t('money-saved'),
+        ]"
+        @update:index="(index) => updateColumnsData(2, index)">
+        <template #slide-0>
+          <SearchContainer
+            :selected-organisation="store.selectedOrganizationFilter"
+            :sorted-organisations="sortedKmTotalOrganisations" />
+        </template>
+        <template #slide-1>
+          <SearchContainer
+            :selected-organisation="store.selectedOrganizationFilter"
+            :sorted-organisations="sortedCo2Organisations" />
+        </template>
+        <template #slide-2>
+          <SearchContainer
+            :selected-organisation="store.selectedOrganizationFilter"
+            :sorted-organisations="sortedNumberOfPeopleOrganisations" />
+        </template>
+        <template #slide-3>
+          <SearchContainer
+            :selected-organisation="store.selectedOrganizationFilter"
+            :sorted-organisations="sortedMoneySavedOrganisations"
+        /></template>
+      </GridElement>
+    </div>
   </div>
 </template>
 
 <script setup lang="ts">
 import { onMounted, computed, watch, reactive } from 'vue';
-import BaseColumn from '@/components/library/BaseColumn.vue';
 import LineChartContainer from '@/components/containers/LineChartContainer.vue';
 import SearchContainer from '@/components/containers/SearchContainer.vue';
 import { suedtirolRadeltStore } from '@/stores/suedtirolRadeltStore';
 import { useI18n } from 'vue-i18n';
+import GridElement from '../library/GridElement.vue';
+import { LineChartData } from '@/models/lineChartData.model';
+import { SuedtirolRadeltItem } from '@/models/suedtirolRadeltItem.model';
 
 interface Props {
   activeSources: string[];
@@ -94,6 +124,7 @@ const { t } = useI18n();
 
 onMounted(() => {
   store.loadCompanyGamificationActions();
+  store.selectedOrganizationFilter = props.selectedOrganisation;
 });
 
 const formatValue = (value: number, minDigits: number, maxDigits: number) =>
@@ -104,11 +135,12 @@ const formatValue = (value: number, minDigits: number, maxDigits: number) =>
 
 const filterOrganisations = () =>
   Object.fromEntries(
-    Object.entries(store.organisations)
+    Object.entries(store.latestData)
       .filter(
         ([, org]) =>
-          !props.selectedOrganisation ||
-          org.sname.toLowerCase() === props.selectedOrganisation.toLowerCase()
+          !store.selectedOrganizationFilter ||
+          org.sname.toLowerCase() ===
+            store.selectedOrganizationFilter.toLowerCase()
       )
       .filter(
         ([key]) =>
@@ -141,51 +173,8 @@ const numberOfPeople = computed(() =>
 );
 const moneySaved = computed(() => calculateTotalValue('money_saved', 2, 2));
 
-const generateRowData = (
-  metric: string,
-  minDigits: number,
-  maxDigits: number
-) => {
-  const filters = store.selectedActionFilter
-    ? [store.selectedActionFilter]
-    : Array.from(store.actionFilters);
-
-  return filters.map((actionFilter) => {
-    const filteredData = Object.entries(filterOrganisations())
-      .filter(([key]) => key.includes(actionFilter))
-      .reduce(
-        (acc, [, organisation]) => {
-          const valueEntry = organisation.values.find(
-            (v) => v.tname === metric
-          );
-
-          if (valueEntry) {
-            acc.value += valueEntry.totalMValue || 0;
-            acc.unit = valueEntry.tunit || acc.unit;
-          }
-
-          return acc;
-        },
-        { value: 0, unit: '' }
-      );
-
-    return {
-      label: actionFilter,
-      value: formatValue(filteredData.value, minDigits, maxDigits),
-      unit: metric !== 'number_of_people' ? filteredData.unit : '',
-    };
-  });
-};
-
-const kmTotalRowData = computed(() => generateRowData('km_total', 0, 2));
-const co2RowData = computed(() => generateRowData('co2', 0, 2));
-const numberOfPeopleRowData = computed(() =>
-  generateRowData('number_of_people', 0, 0)
-);
-const moneySavedRowData = computed(() => generateRowData('money_saved', 2, 2));
-
 const sortOrganisations = (metric: string) => {
-  const filteredOrganisations = Object.entries(store.organisations ?? {})
+  const filteredOrganisations = Object.entries(store.latestData ?? {})
     .filter(
       ([key]) =>
         !store.selectedActionFilter || key.includes(store.selectedActionFilter)
@@ -226,6 +215,58 @@ const sortedNumberOfPeopleOrganisations = computed(() =>
 const sortedMoneySavedOrganisations = computed(() =>
   sortOrganisations('money_saved')
 );
+
+const extractHistoricData = (metric: string): LineChartData => {
+  const filteredMetric = Object.fromEntries(
+    Object.entries(store.historicData).map(([date, data]) => [
+      date,
+      data
+        .filter((d) => d.tname == metric)
+        .filter((d) =>
+          store.selectedOrganizationFilter
+            ? d.sname.includes(store.selectedOrganizationFilter)
+            : true
+        ),
+    ])
+  ) as Record<string, SuedtirolRadeltItem[]>;
+
+  const unit = Object.values(filteredMetric)[0]?.[0]?.tunit ?? '';
+
+  return {
+    data: Object.entries(filteredMetric).map(([key, data]) => ({
+      label: key,
+      value: data.reduce((sum, d) => sum + (d.mvalue ?? 0), 0).toFixed(2),
+    })),
+    unit: unit === 'count' ? '' : unit,
+  };
+};
+
+const gridElementDefinitions = [
+  {
+    title: 'kilometres-travelled',
+    value: kmTotal,
+    unit: 'km',
+    historicData: computed(() => extractHistoricData('km_total')),
+  },
+  {
+    title: 'participants',
+    value: numberOfPeople,
+    unit: '',
+    historicData: computed(() => extractHistoricData('number_of_people')),
+  },
+  {
+    title: 'co2-saved',
+    value: co2,
+    unit: 'kg',
+    historicData: computed(() => extractHistoricData('co2')),
+  },
+  {
+    title: 'money-saved',
+    value: moneySaved,
+    unit: 'EUR',
+    historicData: computed(() => extractHistoricData('money_saved')),
+  },
+];
 
 const columnDefinitions = [
   {
@@ -270,7 +311,7 @@ const updateColumnsData = (setIndex: number, itemIndex: number) => {
   columnsData[setIndex].columnUnit = units[itemIndex];
 };
 
-watch([() => store.organisations, () => store.selectedActionFilter], () => {
+watch([() => store.latestData, () => store.selectedActionFilter], () => {
   columnsData[0].columnValue = kmTotal.value;
   columnsData[1].columnValue = co2.value;
   columnsData[2].columnValue = sortedKmTotalOrganisations.value[0]?.sname ?? '';

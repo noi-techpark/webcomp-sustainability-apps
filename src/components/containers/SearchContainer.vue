@@ -5,65 +5,61 @@ SPDX-License-Identifier: AGPL-3.0-or-later
 -->
 
 <template>
-  <div>
-    <div>
-      <h4>{{ props.title }}</h4>
-    </div>
-    <div class="content">
-      <div class="search-row space-between">
-        <input
-          type="text"
-          placeholder="Suche"
-          class="search-input"
-          v-model="searchQuery" />
-        <div class="search-icon justify-self-end">
-          <search-icon style="padding-right: 2px" alt="search-icon" />
-        </div>
+  <div class="d-flex flex-column flex-grow-1" style="height: 10px">
+    <div class="search-row space-between">
+      <input
+        type="text"
+        placeholder="Suche"
+        class="search-input"
+        v-model="searchQuery" />
+      <div class="search-icon justify-self-end">
+        <search-icon style="padding-right: 2px" alt="search-icon" />
       </div>
+    </div>
 
-      <div
-        :class="{
-          'scroll-enabled':
-            !props.selectedOrganisation ||
-            filteredData.selectedOrganisationIndex === -1,
-        }">
-        <div v-for="(item, index) in filteredData.data" :key="index">
-          <div
-            v-if="
-              item.sname.toLowerCase() ===
-              props.selectedOrganisation?.toLowerCase()
-            "
-            class="ellipsis">
-            {{ filteredData.showTopEllipsis ? '...' : '' }}
+    <div
+      class="d-flex flex-column flex-grow-1 h-100"
+      :class="{
+        'scroll-enabled':
+          !props.selectedOrganisation ||
+          filteredData.selectedOrganisationIndex === -1,
+      }">
+      <div v-for="(item, index) in filteredData.data" :key="index">
+        <div
+          v-if="
+            item.sname.toLowerCase() ===
+            props.selectedOrganisation?.toLowerCase()
+          "
+          class="ellipsis">
+          {{ filteredData.showTopEllipsis ? '...' : '' }}
+        </div>
+        <div
+          :class="[
+            'list-item',
+            {
+              'selected-organisation':
+                item.sname.toLowerCase() ===
+                props.selectedOrganisation?.toLowerCase(),
+            },
+          ]">
+          <div class="label-container">
+            <h4 class="label px-2">{{ `${item.index}. ${item.sname}` }}</h4>
           </div>
-          <div
-            :class="[
-              'list-item',
-              {
-                'selected-organisation':
-                  item.sname.toLowerCase() ===
-                  props.selectedOrganisation?.toLowerCase(),
-              },
-            ]">
-            <div class="label-container">
-              <h4 class="label px-2">{{ item.sname }}</h4>
-            </div>
-            <div class="amount">
-              <span
-                >{{ item.totalMValue.toLocaleString('de-DE') }}
-                {{ item.tunit }}</span
-              >
-            </div>
+          <div class="amount">
+            <span
+              >{{ item.totalMValue.toLocaleString('de-DE') }}
+              {{ item.tunit }}</span
+            >
           </div>
-          <div
-            v-if="
-              item.sname.toLowerCase() ===
-              props.selectedOrganisation?.toLowerCase()
-            "
-            class="ellipsis"
-            style="margin-top: -10px">
-            {{ filteredData.showBottomEllipsis ? '...' : '' }}
-          </div>
+        </div>
+        <div
+          v-if="
+            item.sname.toLowerCase() ===
+            props.selectedOrganisation?.toLowerCase()
+          "
+          class="ellipsis"
+          style="margin-top: -10px">
+          {{ filteredData.showBottomEllipsis ? '...' : '' }}
         </div>
       </div>
     </div>
@@ -75,7 +71,6 @@ import { computed, ref } from 'vue';
 import SearchIcon from '@/assets/img/search-icon.svg';
 
 interface Props {
-  title: string;
   selectedOrganisation: string | undefined;
   sortedOrganisations: { sname: string; totalMValue: number; tunit: string }[];
 }
@@ -86,9 +81,11 @@ const searchQuery = ref('');
 
 const filteredData = computed(() => {
   // Filtered list based on search query
-  let filtered = props.sortedOrganisations.filter((item) =>
-    item.sname.toLowerCase().includes(searchQuery.value.toLowerCase())
-  );
+  let filtered = props.sortedOrganisations
+    .filter((item) =>
+      item.sname.toLowerCase().includes(searchQuery.value.toLowerCase())
+    )
+    .map((item, index) => ({ ...item, index: index + 1 }));
 
   const maxItems = 6;
 
@@ -167,12 +164,8 @@ const filteredData = computed(() => {
 </script>
 
 <style scoped>
-.content {
-  padding: 20px 14px 0 14px;
-}
-
 .scroll-enabled {
-  max-height: 300px;
+  max-height: 100%;
   overflow-y: auto;
 }
 
@@ -217,8 +210,9 @@ h4 {
 
 .list-item {
   display: flex;
+  flex-direction: column;
   padding: 12px 0;
-  align-items: center;
+  justify-content: start;
   border-bottom: 1px solid #ced4da;
 }
 
@@ -242,7 +236,7 @@ h4 {
 
 .amount {
   flex: 1;
-  text-align: right;
+  text-align: center;
 }
 
 .ellipsis {

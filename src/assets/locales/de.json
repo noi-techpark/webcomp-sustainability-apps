@@ -8,8 +8,16 @@
   "participants": "Teilnehmer",
   "money-saved": "Eingespartes Geld",
   "overall-ranking": "Gesamtranking",
+  "chart-type": {
+    "over-time": "Zeitraum",
+    "by-category": "Mobilitätsform"
+  },
   "sustainability-action-filter": {
     "all": "Alle",
     "label": "Sustainability Action"
+  },
+  "organization-filter": {
+    "all": "Alle",
+    "label": "Organisation"
   }
 }

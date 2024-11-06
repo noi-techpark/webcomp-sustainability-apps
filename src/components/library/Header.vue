@@ -42,6 +42,46 @@ SPDX-License-Identifier: AGPL-3.0-or-later
       </div>
       -->
       <div
+        v-if="props.showOrganizationFilter"
+        style="height: 100%; display: flex; align-items: center">
+        <span>{{ t('organization-filter.label') }}: </span>
+      </div>
+
+      <div v-if="props.showOrganizationFilter" class="dropdown">
+        <button
+          class="btn btn-secondary rounded-5 border-0 px-4 py-2"
+          style="background-color: #e9ecef; color: #666666"
+          @click="toggleOrganizationDropdown"
+          type="button">
+          {{
+            store.selectedOrganizationFilter
+              ? store.selectedOrganizationFilter.length > 20
+                ? store.selectedOrganizationFilter.substring(0, 20) + '...'
+                : store.selectedOrganizationFilter
+              : t('organization-filter.all')
+          }}
+          <drop-down-toggle class="ms-4" alt="arrow-left" />
+        </button>
+        <ul v-show="isOrganizationDropdownOpen" class="dropdown-menu">
+          <li
+            v-for="(filter, index) in [
+              t('organization-filter.all'),
+              ...sortedOrganizationFilters,
+            ]"
+            style="cursor: pointer"
+            :key="index">
+            <a
+              class="dropdown-item"
+              @click="
+                selectOrganizationFilter(index === 0 ? undefined : filter)
+              "
+              >{{ filter }}</a
+            >
+          </li>
+        </ul>
+      </div>
+
+      <div
         v-if="props.showSustainabilityActionFilter"
         style="height: 100%; display: flex; align-items: center">
         <span>{{ t('sustainability-action-filter.label') }}: </span>
@@ -51,7 +91,7 @@ SPDX-License-Identifier: AGPL-3.0-or-later
         <button
           class="btn btn-secondary rounded-5 border-0 px-4 py-2"
           style="background-color: #e9ecef; color: #666666"
-          @click="toggleDropdown"
+          @click="toggleActionDropdown"
           type="button">
           {{
             store.selectedActionFilter
@@ -60,7 +100,7 @@ SPDX-License-Identifier: AGPL-3.0-or-later
           }}
           <drop-down-toggle class="ms-4" alt="arrow-left" />
         </button>
-        <ul v-show="isDropdownOpen" class="dropdown-menu">
+        <ul v-show="isActionDropdownOpen" class="dropdown-menu">
           <li
             v-for="(filter, index) in [
               t('sustainability-action-filter.all'),
@@ -70,7 +110,7 @@ SPDX-License-Identifier: AGPL-3.0-or-later
             :key="index">
             <a
               class="dropdown-item"
-              @click="selectFilter(index === 0 ? null : filter)"
+              @click="selectActionFilter(index === 0 ? undefined : filter)"
               >{{ filter }}</a
             >
           </li>
@@ -81,7 +121,7 @@ SPDX-License-Identifier: AGPL-3.0-or-later
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue';
+import { computed, ref } from 'vue';
 import { suedtirolRadeltStore } from '@/stores/suedtirolRadeltStore';
 import { useI18n } from 'vue-i18n';
 import DropDownToggle from '@/assets/img/dropdown_toggle.svg';
@@ -89,6 +129,7 @@ import DropDownToggle from '@/assets/img/dropdown_toggle.svg';
 interface Props {
   sources: string[];
   activeSources: string[];
+  showOrganizationFilter: boolean;
   showSustainabilityActionFilter: boolean;
 }
 
@@ -96,45 +137,29 @@ const props = defineProps<Props>();
 const store = suedtirolRadeltStore();
 const { t } = useI18n();
 
-const emit = defineEmits<{
-  (event: 'update-active-sources', newActiveSources: string[]): void;
-}>();
+const isActionDropdownOpen = ref(false);
+const isOrganizationDropdownOpen = ref(false);
 
-const isActive = function (source: string): boolean {
-  return props.activeSources.includes(source);
+const sortedOrganizationFilters = computed(() => {
+  return [...store.organizationFilters].sort();
+});
+
+const toggleActionDropdown = () => {
+  isActionDropdownOpen.value = !isActionDropdownOpen.value;
 };
 
-const toggleSource = function (source: string) {
-  if (isActive(source) && props.activeSources.length === 1) {
-    return;
-  }
-  if (source === 'lock.all') {
-    emit('update-active-sources', ['lock.all']);
-  } else if (props.activeSources.includes('lock.all')) {
-    emit('update-active-sources', [source]);
-  } else {
-    const index = props.activeSources.indexOf(source);
-    const newActiveSources = [...props.activeSources];
-    if (index === -1) {
-      newActiveSources.push(source);
-    } else {
-      newActiveSources.splice(index, 1);
-    }
-    if (newActiveSources.length > 0) {
-      emit('update-active-sources', newActiveSources);
-    }
-  }
+const toggleOrganizationDropdown = () => {
+  isOrganizationDropdownOpen.value = !isOrganizationDropdownOpen.value;
 };
 
-const isDropdownOpen = ref(false);
-
-const toggleDropdown = () => {
-  isDropdownOpen.value = !isDropdownOpen.value;
-};
-
-const selectFilter = (filter: string | null) => {
+const selectActionFilter = (filter?: string) => {
   store.setSelectedActionFilter(filter);
-  isDropdownOpen.value = false;
+  isActionDropdownOpen.value = false;
+};
+
+const selectOrganizationFilter = (filter?: string) => {
+  store.setSelectedOrganizationFilter(filter);
+  isOrganizationDropdownOpen.value = false;
 };
 </script>
 
@@ -168,6 +193,8 @@ const selectFilter = (filter: string | null) => {
   top: 100%;
   right: 0;
   display: block;
+  overflow-y: auto;
+  max-height: 200px;
 }
 
 .source-item {

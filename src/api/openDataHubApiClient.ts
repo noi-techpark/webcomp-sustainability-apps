@@ -4,7 +4,7 @@
 
 import axios from 'axios';
 
-export const suedtirolRadeltApiClient = axios.create({
+export const openDataHubApiClient = axios.create({
   baseURL: 'https://mobility.api.opendatahub.testingmachine.eu/v2', // Replace with your base URL
   headers: {
     'Content-Type': 'application/json',

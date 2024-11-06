@@ -104,11 +104,17 @@ const chartOptions = computed(() => ({
       },
       ticks: {
         color: '#ADB5BD',
-        callback: function (value: number) {
-          if (value >= 1000000) {
-            return value / 1000000 + 'Mil.';
+        callback: function (tickValue: string | number) {
+          if (typeof tickValue === 'number') {
+            if (tickValue >= 1000000) {
+              return tickValue / 1000000 + 'Mil.';
+            } else if (tickValue >= 1000) {
+              return tickValue / 1000 + 'k';
+            } else {
+              return tickValue.toPrecision(3);
+            }
           }
-          return value / 1000 + 'k';
+          return tickValue;
         },
       },
     },
@@ -126,7 +132,6 @@ const chartOptions = computed(() => ({
 </script>
 <style scoped>
 canvas {
-  width: auto !important;
   height: 130px !important;
 }
 </style>

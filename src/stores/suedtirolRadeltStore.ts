@@ -2,8 +2,13 @@
 //
 // SPDX-License-Identifier: AGPL-3.0-or-later
 
+import {
+  fetchCompaniesAsync,
+  fetchCompanyGamificationActionsAsync,
+  fetchHistoricDataAsync,
+} from '@/api/suedtirolRadelt/suedtirolRadeltApi';
+import { SuedtirolRadeltItem } from '@/models/suedtirolRadeltItem.model';
 import { defineStore } from 'pinia';
-import { fetchCompanyGamificationActions } from '@/api/suedtirolRadeltApi';
 
 interface AggregatedData {
   sname: string;
@@ -15,32 +20,39 @@ interface AggregatedData {
 }
 
 interface State {
-  organisations: Record<string, AggregatedData>;
+  latestData: Record<string, AggregatedData>;
+  historicData: Record<string, SuedtirolRadeltItem[]>;
   actionFilters: Set<string>;
-  selectedActionFilter: string | null;
+  organizationFilters: Set<string>;
+  selectedActionFilter?: string;
+  selectedOrganizationFilter?: string;
   loading: boolean;
   error: string | null;
 }
 
 export const suedtirolRadeltStore = defineStore('suedtirol-radelt-store', {
   state: (): State => ({
-    organisations: {},
+    latestData: {},
+    historicData: {},
     actionFilters: new Set<string>(),
-    selectedActionFilter: null,
+    organizationFilters: new Set<string>(),
     loading: false,
     error: null,
   }),
   actions: {
-    setSelectedActionFilter(newFilter: string | null) {
+    setSelectedActionFilter(newFilter?: string) {
       this.selectedActionFilter = newFilter;
+    },
+    setSelectedOrganizationFilter(newFilter?: string) {
+      this.selectedOrganizationFilter = newFilter;
     },
     async loadCompanyGamificationActions() {
       this.loading = true;
       this.error = null;
       try {
-        const response = await fetchCompanyGamificationActions();
-
-        this.organisations = response.reduce(
+        this.organizationFilters = await fetchCompaniesAsync();
+        const latestDataResponse = await fetchCompanyGamificationActionsAsync();
+        this.latestData = latestDataResponse.reduce(
           (organisations, item) => {
             // Only these data fields are relevant
             if (
@@ -82,7 +94,7 @@ export const suedtirolRadeltStore = defineStore('suedtirol-radelt-store', {
         );
 
         this.actionFilters = new Set(
-          Object.keys(this.organisations).reduce(
+          Object.keys(this.latestData).reduce(
             (lastParts: string[], key: string) => {
               const lastPart = key.split('-').pop();
               if (lastPart) {
@@ -92,6 +104,25 @@ export const suedtirolRadeltStore = defineStore('suedtirol-radelt-store', {
             },
             []
           )
+        );
+
+        const to = new Date();
+        const from = new Date(to);
+        from.setDate(to.getDate() - 5);
+
+        const historicDataRequest = await fetchHistoricDataAsync(from, to);
+
+        this.historicData = historicDataRequest.reduce(
+          (historicData, item) => {
+            const date = new Date(item._timestamp);
+            const key = date.toLocaleDateString();
+            if (!historicData[key]) {
+              historicData[key] = [];
+            }
+            historicData[key].push(item);
+            return historicData;
+          },
+          {} as Record<string, SuedtirolRadeltItem[]>
         );
       } catch (error) {
         this.error = 'Failed to fetch data';
