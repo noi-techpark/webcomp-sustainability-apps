@@ -6,7 +6,7 @@ SPDX-License-Identifier: AGPL-3.0-or-later
 
 <template>
   <div class="d-flex flex-column flex-grow-1" style="height: 10px">
-    <div class="search-row space-between">
+    <div class="search-row space-between mb-5">
       <input
         type="text"
         placeholder="Suche"
