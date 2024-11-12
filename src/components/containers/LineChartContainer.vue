@@ -7,10 +7,12 @@ SPDX-License-Identifier: AGPL-3.0-or-later
 <template>
   <div>
     <LineChart :data="data" :labels="labels" />
-    <div v-for="(item, index) in sortedData" :key="index" class="list-item">
-      <h4 class="px-2 label">{{ item.label }}</h4>
-      <div class="column value">
-        <span>{{ item.value }} {{ props.data.unit }}</span>
+    <div class="list">
+      <div v-for="(item, index) in sortedData" :key="index" class="list-item">
+        <div class="px-2 label">{{ item.label }}</div>
+        <div class="column value">
+          <span>{{ item.value }} {{ props.data.unit }}</span>
+        </div>
       </div>
     </div>
   </div>
@@ -37,15 +39,10 @@ const sortedData = computed(() => {
 </script>
 
 <style scoped>
-h4 {
-  font-weight: bold;
-  font-size: 15px;
-  margin: 0;
-}
-
 .list-item {
   display: flex;
-  padding: 6px 0;
+  font-size: 12px;
+  padding: 4px 0;
   align-items: center;
   border-bottom: 1px solid #ced4da;
 }
