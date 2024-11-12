@@ -7,10 +7,7 @@ SPDX-License-Identifier: AGPL-3.0-or-later
 <template>
   <div>
     <LineChart :data="data" :labels="labels" />
-    <div
-      v-for="(item, index) in props.data.data"
-      :key="index"
-      class="list-item">
+    <div v-for="(item, index) in sortedData" :key="index" class="list-item">
       <h4 class="px-2 label">{{ item.label }}</h4>
       <div class="column value">
         <span>{{ item.value }} {{ props.data.unit }}</span>
@@ -31,6 +28,12 @@ const props = defineProps<Props>();
 
 const labels = computed(() => props.data.data?.map((item) => item.label));
 const data = computed(() => props.data.data?.map((item) => Number(item.value)));
+const sortedData = computed(() => {
+  const dataCopy = [...props.data.data];
+  return dataCopy.sort(
+    (a, b) => new Date(b.label).getTime() - new Date(a.label).getTime()
+  );
+});
 </script>
 
 <style scoped>
