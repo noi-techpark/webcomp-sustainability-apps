@@ -6,7 +6,7 @@ SPDX-License-Identifier: AGPL-3.0-or-later
 
 <template>
   <div class="d-flex flex-column flex-grow-1" style="height: 10px">
-    <div class="search-row space-between">
+    <div class="search-row space-between mb-5">
       <input
         type="text"
         placeholder="Suche"
@@ -31,7 +31,7 @@ SPDX-License-Identifier: AGPL-3.0-or-later
             props.selectedOrganisation?.toLowerCase()
           "
           class="ellipsis">
-          {{ filteredData.showTopEllipsis ? '...' : '' }}
+          <span v-if="filteredData.showTopEllipsis">...</span>
         </div>
         <div
           :class="[
@@ -45,7 +45,7 @@ SPDX-License-Identifier: AGPL-3.0-or-later
           <div class="label-container">
             <h4 class="label px-2">{{ `${item.index}. ${item.sname}` }}</h4>
           </div>
-          <div class="amount">
+          <div class="amount text-end">
             <span
               >{{ item.totalMValue.toLocaleString('de-DE') }}
               {{ item.tunit }}</span
@@ -57,9 +57,9 @@ SPDX-License-Identifier: AGPL-3.0-or-later
             item.sname.toLowerCase() ===
             props.selectedOrganisation?.toLowerCase()
           "
-          class="ellipsis"
-          style="margin-top: -10px">
-          {{ filteredData.showBottomEllipsis ? '...' : '' }}
+          class="ellipsis fade-effect-bottom"
+          style="margin-top: -20px">
+          <span v-if="filteredData.showBottomEllipsis">...</span>
         </div>
       </div>
     </div>
@@ -240,8 +240,8 @@ h4 {
 }
 
 .ellipsis {
-  color: #dee2e6;
-  font-size: 18px;
-  height: 26px;
+  font-size: 36px;
+  font-weight: bold;
+  color: #adb5bd;
 }
 </style>
