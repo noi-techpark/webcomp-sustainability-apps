@@ -67,21 +67,19 @@
       },
       {
         "key": "showSustainabilityActionFilter",
-        "type": "select",
+        "type": "bool",
         "label": "Show the sustainability action filter",
         "required": true,
         "options": {
-          "values": [true, false],
           "default": true
         }
       },
       {
         "key": "showOrganizationFilter",
-        "type": "select",
+        "type": "bool",
         "label": "Show the organization filter",
         "required": true,
         "options": {
-          "values": [true, false],
           "default": true
         }
       },

@@ -12,11 +12,11 @@ import { createPinia } from 'pinia';
 const pinia = createPinia();
 
 const rootProps = {
-  fontFamily: 'Arial',
+  fontFamily: '"Open Sans", sans-serif',
   fontColor: 'black',
   language: 'de',
-  showSustainabilityActionFilter: true,
-  showOrganizationFilter: false,
+  showSustainabilityActionFilter: 'true',
+  showOrganizationFilter: 'false',
 };
 
 createApp(App, rootProps).use(i18n).use(pinia).mount('#app');
