@@ -47,6 +47,15 @@
         }
       },
       {
+        "key": "fontFamily",
+        "type": "text",
+        "label": "Enter the font family name (e.g. \"Open Sans\", sans-serif), has to be loaded in the parent page/browser",
+        "required": true,
+        "options": {
+          "default": "\"Open Sans\", sans-serif"
+        }
+      },
+      {
         "key": "language",
         "type": "select",
         "label": "Two letter key for the language to be used. Fallback is `en`",

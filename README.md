@@ -61,6 +61,13 @@ The font color in hex format (e.g. #000000 for black).
 Type: string
 Default: '#000000'
 
+#### Font Family
+
+The font family used in the component. Has to be loaded in the parent container.
+
+Type: string
+Default: '"Open Sans", sans-serif'
+
 #### Language
 
 Two letter key for the language to be used.
