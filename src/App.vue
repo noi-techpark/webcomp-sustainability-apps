@@ -9,8 +9,10 @@ SPDX-License-Identifier: AGPL-3.0-or-later
     <Header
       :sources="sources"
       :active-sources="activeSources"
-      :showSustainabilityActionFilter="props.showSustainabilityActionFilter"
-      :showOrganizationFilter="props.showOrganizationFilter"
+      :showSustainabilityActionFilter="
+        props.showSustainabilityActionFilter === 'true'
+      "
+      :showOrganizationFilter="props.showOrganizationFilter === 'true'"
       @update-active-sources="handleUpdateActiveSources" />
     <SuedtirolRadelt
       v-if="showSuedtirolRadelt()"
@@ -40,13 +42,12 @@ interface Props {
   language: string;
   fontColor: string;
   fontFamily: string;
-  showSustainabilityActionFilter: boolean;
-  showOrganizationFilter: boolean;
+  showSustainabilityActionFilter: string;
+  showOrganizationFilter: string;
   selectedOrganisation?: string;
 }
 
 const props = defineProps<Props>();
-
 const sources = [SUEDTIROL_RADELT, UMMADUM, LOCKALL];
 
 const activeSources = ref<string[]>([SUEDTIROL_RADELT]);
