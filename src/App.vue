@@ -44,10 +44,7 @@ interface Props {
   selectedOrganisation?: string;
 }
 
-const props = withDefaults(defineProps<Props>(), {
-  showSustainabilityActionFilter: true,
-  showOrganizationFilter: true,
-});
+const props = defineProps<Props>();
 
 const sources = [SUEDTIROL_RADELT, UMMADUM, LOCKALL];
 
