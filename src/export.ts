@@ -17,6 +17,7 @@ class CustomElement extends HTMLElement {
   connectedCallback() {
     const propsList: string[] = [
       'fontColor',
+      'fontFamily',
       'language',
       'showSustainabilityActionFilter',
       'showOrganizationFilter',

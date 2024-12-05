@@ -11,4 +11,12 @@ import { createPinia } from 'pinia';
 
 const pinia = createPinia();
 
-createApp(App).use(i18n).use(pinia).mount('#app');
+const rootProps = {
+  fontFamily: '"Open Sans", sans-serif',
+  fontColor: 'black',
+  language: 'de',
+  showSustainabilityActionFilter: 'true',
+  showOrganizationFilter: 'false',
+};
+
+createApp(App, rootProps).use(i18n).use(pinia).mount('#app');

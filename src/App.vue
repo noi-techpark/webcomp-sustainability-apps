@@ -5,12 +5,12 @@ SPDX-License-Identifier: AGPL-3.0-or-later
 -->
 
 <template>
-  <div id="container">
+  <div id="container" :style="{ fontFamily: props.fontFamily }">
     <Header
       :sources="sources"
       :active-sources="activeSources"
-      :show-sustainability-action-filter="props.showSustainabilityActionFilter"
-      :show-organization-filter="props.showOrganizationFilter"
+      :showSustainabilityActionFilter="props.showSustainabilityActionFilter"
+      :showOrganizationFilter="props.showOrganizationFilter"
       @update-active-sources="handleUpdateActiveSources" />
     <SuedtirolRadelt
       v-if="showSuedtirolRadelt()"
@@ -39,15 +39,13 @@ import { useI18n } from 'vue-i18n';
 interface Props {
   language: string;
   fontColor: string;
+  fontFamily: string;
   showSustainabilityActionFilter: boolean;
   showOrganizationFilter: boolean;
   selectedOrganisation?: string;
 }
 
-const props = withDefaults(defineProps<Props>(), {
-  showSustainabilityActionFilter: true,
-  showOrganizationFilter: true,
-});
+const props = defineProps<Props>();
 
 const sources = [SUEDTIROL_RADELT, UMMADUM, LOCKALL];
 
@@ -69,10 +67,7 @@ const handleUpdateActiveSources = function (newActiveSources: string[]) {
 </script>
 
 <style>
-@import url('https://fonts.googleapis.com/css?family=Open+Sans');
-
 #container {
-  font-family: 'Open Sans', sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
