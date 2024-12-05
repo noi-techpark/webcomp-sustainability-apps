@@ -155,7 +155,7 @@ watch(index, (newIndex) => {
   text-overflow: ellipsis;
   overflow: hidden;
   font-size: 25px;
-  margin: 20px 14px;
+  margin: 14px 14px;
 }
 
 .details-container {
